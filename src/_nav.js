@@ -4,10 +4,11 @@ export default {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
+    },
+    {
+      name: 'Maintainance Control Center',
+      url: '/module/mcc',
+      icon: 'icon-drop',
     },
     {
       title: true,

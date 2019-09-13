@@ -1,0 +1,6 @@
+{
+  "name": "Mccdocs",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Mccdocs.js"
+}

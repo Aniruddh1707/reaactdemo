@@ -1,0 +1,6 @@
+{
+  "name": "Workpack",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Workpack.js"
+}

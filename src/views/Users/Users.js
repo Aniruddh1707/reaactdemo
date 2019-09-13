@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { render } from "react-dom";
 //import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { AgGridReact } from "ag-grid-react";
@@ -7,6 +7,24 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import "ag-grid-enterprise";
 //import usersData from './UsersData'
+
+class ChildMessageRenderer extends Component {
+    constructor(props) {
+        super(props);
+
+        this.invokeParentMethod = this.invokeParentMethod.bind(this);
+    }
+
+    invokeParentMethod() {
+		window.location.href="#/module/workpack";
+    }
+
+    render() {
+        return (
+            <span><button style={{height: 20, lineHeight: 0.5}} onClick={this.invokeParentMethod} className="btn btn-info">View</button></span>
+        );
+    }
+}
 
 class Users extends Component {
   constructor(props) {
@@ -78,6 +96,13 @@ class Users extends Component {
           /*cellEditorParams: {
             values: ["English", "Spanish", "French", "Portuguese", "(other)"]
           }*/
+        },
+        {
+          headerName: "Child/Parent",
+          field: "value",
+          cellRenderer: "childMessageRenderer",
+          colId: "params",
+          width: 180
         }
       ],
       groupDefaultExpanded: -1,
@@ -95,6 +120,9 @@ class Users extends Component {
         }
       },
       rowData: createData(),
+      frameworkComponents: {
+        childMessageRenderer: ChildMessageRenderer
+      },
       rowSelection: "multiple"
     };
   }
@@ -123,6 +151,7 @@ class Users extends Component {
             rowSelection={this.state.rowSelection}
             pagination={true}
             paginationAutoPageSize={false}
+            frameworkComponents={this.state.frameworkComponents}
             onGridReady={this.onGridReady}
           />
       </div>

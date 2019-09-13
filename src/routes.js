@@ -35,12 +35,17 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
-
+const Mcc = React.lazy(() => import('./views/Module/Mcc'));
+const Workpack = React.lazy(() => import('./views/Module/Workpack'));
+const Mccdocs = React.lazy(() => import('./views/Module/Mccdocs'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
+  { path: '/module/mcc', exact: true, name: 'Mcc', component: Mcc },
+  { path: '/module/workpack', name: 'Workpacks - Work Orders', component: Workpack },
+  { path: '/module/mccdocs', name: 'Workpacks - Work Orders >> Documents', component: Mccdocs },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
   { path: '/base', exact: true, name: 'Base', component: Cards },
