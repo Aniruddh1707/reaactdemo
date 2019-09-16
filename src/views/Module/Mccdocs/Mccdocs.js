@@ -8,25 +8,10 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
-import imgdoc from './testdoc.gif';
-class ChildMessageRenderer extends Component {
-    constructor(props) {
-        super(props);
-
-        this.invokeParentMethod = this.invokeParentMethod.bind(this);
-    }
-
-    invokeParentMethod() {
-		window.location.href="#/module/mcc";
-    }
-
-    render() {
-        return (
-            <span><button style={{height: 20, lineHeight: 0.5}} onClick={this.invokeParentMethod} className="btn btn-info">View</button></span>
-        );
-    }
-}
-
+import docfile from './docs.png';
+import excelfile from './excel.png';
+import pptffile from './pptf.png';
+import {getRequest,postRequest,deleteRequest} from '../../../services/ServerRequest';
 const products = [
 	{
 		'id':'1',
@@ -70,171 +55,70 @@ const columns = [{
   text: 'Defect'
 }];
 
+function getFileExtension1(fileid,filename) {
+	var extFile = filename.split('.').pop();
+	var imgFile = '';
+	if(extFile=='doc' || extFile=='docx'){
+		imgFile = docfile;
+	}else if(extFile=='xls' || extFile=='xlsx'){
+		imgFile = excelfile;
+	}else if(extFile=='ppt' || extFile=='pptx'){
+		imgFile = pptffile;
+	}else{
+		imgFile = 'http://192.168.100.15:88/Dev/dev/slim/src/uploads/'+fileid+'/'+filename;
+	}
+	return imgFile;
+}
+
+var dataObj = '{"clientid":"1","doc_type":"5","view_type":"1","tail_id":"1789","folderid":"5035"}';
+var filesdata='';
+postRequest('mcc/getMccFiles').then((result) => {
+	filesdata = result;
+	if(filesdata){         
+		sessionStorage.setItem('filesdata',JSON.stringify(filesdata));
+	}
+});
+var resData = sessionStorage.getItem('filesdata');
+resData = JSON.parse(resData);
+var fileObj = resData.data;
+const Test = ({fileObj}) => (
+	<div className="row row row-cards">
+    {fileObj.map(fileObj => (
+				<div className="col col-sm-6 col-lg-3">
+					<div className="card p-3">
+						<a className="mb-3">
+							<img src={getFileExtension1(fileObj.fileid,fileObj.filename)} alt="Photo by Nathan Guerrero" className="rounded imgSize" />
+						</a>
+						<div className="d-flex align-items-center px-2">
+							<div>
+								<div>{fileObj.filename}</div>
+								<small className="d-block text-muted">{fileObj.UpdatedOn}</small> 
+							</div>
+						</div>
+					</div>
+				</div>
+    ))}
+  </div>
+); 
+
 class Mccdocs extends Component {
   render() {
     return (
 		<div className="animated fadeIn">
 			<BootstrapTable keyField='id' data={ products } columns={ columns } striped hover condensed />
-			<FilePond allowMultiple={true} server="/uploads"/>
-			<div className="row row row-cards">
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className="row row row-cards">
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className="row row row-cards">
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="col col-sm-6 col-lg-4">
-					<div className="card p-3">
-						<a className="mb-3">
-							<img src={imgdoc} alt="Photo by Nathan Guerrero" className="rounded" />
-						</a>
-						<div className="d-flex align-items-center px-2">
-							<div>
-								<div>Nathan Guerrero</div>
-								<small className="d-block text-muted"> 12 days ago</small> 
-							</div>
-							<div className="ml-auto text-muted">
-								<a className="icon"><i className="fe fe-eye mr-1" />112</a>
-								<a className="icon d-none d-md-inline-block ml-3"><i className="fe fe-heart mr-1" />42</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<FilePond allowMultiple={true} server=
+			{
+					{
+							url: 'http://192.168.100.15:88/Dev/dev/slim/public/api/uploadFiles',
+							process: {
+									headers: {
+											'authorization': 'Bearer '+sessionStorage.getItem('accessToken')
+									},
+							}
+					}
+			}>
+			</FilePond>
+			<Test fileObj={fileObj}/>
 		</div>
     );
   }

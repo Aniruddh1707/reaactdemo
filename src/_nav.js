@@ -10,7 +10,7 @@ export default {
       url: '/module/mcc',
       icon: 'icon-drop',
     },
-    {
+    /*{
       title: true,
       name: 'Theme',
       wrapper: {            // optional wrapper object
@@ -261,6 +261,6 @@ export default {
       url: '/dashboard',
       icon: 'icon-ban',
       attributes: { disabled: true },
-    },
+    },*/
   ],
 };

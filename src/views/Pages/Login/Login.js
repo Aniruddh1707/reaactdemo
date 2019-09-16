@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
-import {PostData} from '../../../services/PostData';
+import {getRequest,postLoginRequest,deleteRequest} from '../../../services/ServerRequest';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 import logo from './logo.png';
@@ -23,6 +23,9 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      client_id:'flymcc',
+      grant_type:'client_credentials',
+      client_secret:'qwerasdfzxcvpoi',
       redirectToReferrer: false,
       errors: {
         username: '',
@@ -45,7 +48,7 @@ class Login extends Component {
     }
     this.setState({errors});
     /*if(this.state.username && this.state.password){
-      PostData('login',this.state).then((result) => {
+      postRequest('login',this.state).then((result) => {
         let responseJson = result;
         responseJson = {id:1,name:"Aniruddh"};
         if(responseJson){         
@@ -55,8 +58,16 @@ class Login extends Component {
       });
     }*/
     if(validateForm(this.state.errors)) {
-      sessionStorage.setItem('user','1');
-      this.setState({redirectToReferrer: true});
+      postLoginRequest('login',this.state).then((result) => {
+        let userJson = result;
+        if(userJson){         
+          sessionStorage.setItem('user',JSON.stringify(userJson));
+          sessionStorage.setItem('accessToken',userJson.access_token);
+          this.setState({redirectToReferrer: true});
+        }
+      });
+      //sessionStorage.setItem('user','1');
+      //this.setState({redirectToReferrer: true});
     }else{
       console.error('Invalid Form');
       return false;
@@ -89,10 +100,7 @@ class Login extends Component {
     let boxClass = [];
     boxClass.push('inputStyle');
     const {errors} = this.state;
-    if (this.state.redirectToReferrer) {
-      return (<Redirect to={'/dashboard'}/>)
-    }
-    if(sessionStorage.getItem('user')){
+    if(sessionStorage.getItem('user') != null){
       return (<Redirect to={'/dashboard'}/>)
     }
 
