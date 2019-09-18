@@ -106,9 +106,29 @@ class Mccdocs extends Component {
 									headers: {
 											'authorization': 'Bearer '+sessionStorage.getItem('accessToken')
 									},
-							}
+							},
 					}
-			}>
+			}
+			onprocessfile={(err, file) => {
+				if(err==null){
+					var dataObj = '{"clientid":"1","doc_type":"5","view_type":"1","tail_id":"1789","folderid":"5035"}';
+					var filesdata='';
+					postRequest('mcc/getMccFiles').then((result) => {
+						filesdata = result;
+						if(filesdata){         
+							sessionStorage.setItem('filesdata',JSON.stringify(filesdata));
+							setTimeout(() => {
+								window.location.reload();
+							}, 1000);
+						}
+					});
+				}else{
+					alert('There is someting wrong..');
+					return false;
+				}
+				
+			}}
+			>
 			</FilePond>
 			<Test fileObj={fileObj}/>
 		</div>
