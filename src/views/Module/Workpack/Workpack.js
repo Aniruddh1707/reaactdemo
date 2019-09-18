@@ -17,7 +17,7 @@ class ChildMessageRenderer extends Component {
     }
 
     invokeParentMethod() {
-		window.location.href="#/module/mccdocs";
+			window.location.href="#/module/mccdocs";
     }
 
     render() {
@@ -30,19 +30,15 @@ class ChildMessageRenderer extends Component {
 class AddRowRenderer extends Component {
     constructor(props) {
         super(props);
-
         this.invokeParentMethod = this.invokeParentMethod.bind(this);
     }
-
     invokeParentMethod() {
-		//http://192.168.100.15:88/dev/dev/slim/public/api/mcc/add
-		//
-		var dataRequest = { 'tail_id':1789 };
-		postRequest('mcc/add',dataRequest).then((result) => {
-			responseJson = result.data;
-			alert("Record added successfully.");
-		});
-
+			var addJson="";
+			var dataRequest = { 'tail_id':1789 };
+			postRequest('mcc/add',dataRequest).then((result) => {
+				addJson = result.data;
+				alert("Record added successfully.");
+			});
     }
 
     render() {
@@ -51,23 +47,11 @@ class AddRowRenderer extends Component {
         );
     }
 }
-var responseJson="";
-var dataRequest = { 'view_type': 1, 'client_id':1,'tail_id':1789,'doc_type':5 };
-
- postRequest('MCC',dataRequest).then((result) => {
-	responseJson = result.data;
-	
-	if(responseJson){ 
-	//	console.log(JSON.stringify(responseJson));
-		sessionStorage.setItem('workpackjson',JSON.stringify(responseJson));
-	}
-	
-});
 const buttonAdd = ({ onPress, onLongPress, children }) => {
     return (
-		<h5>
-		  <AddRowRenderer/>
-		</h5>
+			<h5>
+				<AddRowRenderer/>
+			</h5>
 	  );
 };
 
@@ -91,10 +75,6 @@ const styles = {
         paddingBottom: 10
     }
 };
-
-
-	let products =JSON.parse(sessionStorage.getItem('workpackjson'));
-	//products = JSON.parse(products);
 
 const columns = [{
   dataField: 'id',
@@ -211,7 +191,7 @@ const defaultSorted = [{
 	</div>
   );
   
-  
+let products = JSON.parse(sessionStorage.getItem('workpackjson'));;  
 class Workpack extends Component {
 	constructor(props) {
 		super(props);

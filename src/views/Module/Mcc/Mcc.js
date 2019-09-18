@@ -31,6 +31,7 @@ class ChildMessageRenderer extends Component {
 class Mcc extends Component {
   constructor(props) {
     super(props);
+    var responseJson='';
     this.state = {
       columnDefs: [
         {
@@ -191,24 +192,27 @@ class Mcc extends Component {
   }
 }
 
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
+
 function createData() {
 	var rowCount = 20;
 	var row = 0;
-	var responseJson='';
 	var finalRes = [];
-	getRequest('fleet').then((result) => {
-		responseJson = result;
-		if(responseJson){         
-			sessionStorage.setItem('responseJson',JSON.stringify(responseJson));
-		}
-	});
 	var resData = sessionStorage.getItem('responseJson');
-	resData = JSON.parse(resData);
-	for (var i = 0; i < Object.keys(resData.data).length; i++) {
-		var rowItem = createRowItem(row,resData.data[i]);
-		finalRes.push(rowItem);
-		row++;
-	}
+  resData = JSON.parse(resData);
+  if(!isEmpty(resData)){
+    for (var i = 0; i < Object.keys(resData.data).length; i++) {
+      var rowItem = createRowItem(row,resData.data[i]);
+      finalRes.push(rowItem);
+      row++;
+    }
+  }
 	return finalRes;
 }
 function createRowItem(row,resData) {

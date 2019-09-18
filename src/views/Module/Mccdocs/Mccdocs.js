@@ -65,19 +65,11 @@ function getFileExtension1(fileid,filename) {
 	}else if(extFile=='ppt' || extFile=='pptx'){
 		imgFile = pptffile;
 	}else{
-		imgFile = 'http://192.168.100.15:88/Dev/dev/slim/src/uploads/'+fileid+'/'+filename;
+		imgFile = 'http://192.168.100.56/mcc2/uploads/'+fileid+'/'+filename;
 	}
 	return imgFile;
 }
 
-var dataObj = '{"clientid":"1","doc_type":"5","view_type":"1","tail_id":"1789","folderid":"5035"}';
-var filesdata='';
-postRequest('mcc/getMccFiles').then((result) => {
-	filesdata = result;
-	if(filesdata){         
-		sessionStorage.setItem('filesdata',JSON.stringify(filesdata));
-	}
-});
 var resData = sessionStorage.getItem('filesdata');
 resData = JSON.parse(resData);
 var fileObj = resData.data;
@@ -109,7 +101,7 @@ class Mccdocs extends Component {
 			<FilePond allowMultiple={true} server=
 			{
 					{
-							url: 'http://192.168.100.15:88/Dev/dev/slim/public/api/uploadFiles',
+							url: 'http://192.168.100.56/mcc2/api/uploadFiles',
 							process: {
 									headers: {
 											'authorization': 'Bearer '+sessionStorage.getItem('accessToken')

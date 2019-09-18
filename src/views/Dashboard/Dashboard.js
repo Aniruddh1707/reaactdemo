@@ -22,7 +22,7 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
-
+import {getRequest,postRequest,deleteRequest} from '../../services/ServerRequest';
 const Widget03 = lazy(() => import('../../views/Widgets/Widget03'));
 
 const brandPrimary = getStyle('--primary')
@@ -455,6 +455,31 @@ const mainChartOpts = {
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    var responseJson='';
+    getRequest('fleet').then((result) => {
+      responseJson = result;
+      if(responseJson){         
+        sessionStorage.setItem('responseJson',JSON.stringify(responseJson));
+      }
+    });
+
+    var workpackjson="";
+		var dataRequest = { 'view_type': 1, 'client_id':1,'tail_id':1789,'doc_type':5 };
+		postRequest('MCC',dataRequest).then((result) => {
+			workpackjson = result.data;
+			if(workpackjson){ 
+				sessionStorage.setItem('workpackjson',JSON.stringify(workpackjson));
+			}
+    });
+    
+    var dataObj = '{"clientid":"1","doc_type":"5","view_type":"1","tail_id":"1789","folderid":"5035"}';
+    var filesdata='';
+    postRequest('mcc/getMccFiles').then((result) => {
+      filesdata = result;
+      if(filesdata){         
+        sessionStorage.setItem('filesdata',JSON.stringify(filesdata));
+      }
+    });
 
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
