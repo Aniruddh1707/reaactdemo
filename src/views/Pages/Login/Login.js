@@ -60,10 +60,13 @@ class Login extends Component {
     if(validateForm(this.state.errors)) {
       postLoginRequest('login',this.state).then((result) => {
         let userJson = result;
-        if(userJson){         
+        if(userJson.access_token != ''){         
           sessionStorage.setItem('user',JSON.stringify(userJson));
           sessionStorage.setItem('accessToken',userJson.access_token);
           this.setState({redirectToReferrer: true});
+        }else{
+          alert('Invalid Credentials');
+          return false;
         }
       });
       //sessionStorage.setItem('user','1');
@@ -127,7 +130,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" name="username" className={boxClass} placeholder="Username" onChange={this.onChange} placeholder="with a placeholder"/>
+                        <Input type="email" name="username" className={boxClass} placeholder="Username" onChange={this.onChange} placeholder="Please enter email"/>
                         {errors.username.length > 0 && 
                         <span className='error'>{errors.username}</span>}
                       </InputGroup>
@@ -137,7 +140,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" name="password" className={boxClass} placeholder="Password" onChange={this.onChange} placeholder="with a placeholder"/>
+                        <Input type="password" name="password" className={boxClass} placeholder="Password" onChange={this.onChange} placeholder="Please enter password"/>
                         {errors.password.length > 0 && 
                         <span className='error'>{errors.password}</span>}
                       </InputGroup>

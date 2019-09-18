@@ -1,4 +1,4 @@
-const BaseURL = 'http://192.168.100.15:88/Dev/dev/slim/public/api/';
+const BaseURL = 'http://192.168.100.56/mcc2/api/';
 //const BaseURL = 'http://192.168.100.5:88/api/';
 
 /*const getRequest = (actionName, userData) => {
